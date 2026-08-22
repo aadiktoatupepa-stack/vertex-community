@@ -1,0 +1,1447 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vertex Community</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
+    overflow-x:hidden;
+
+    background:
+        radial-gradient(
+            circle at 20% 20%,
+            rgba(90,70,180,.35),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 80% 70%,
+            rgba(40,100,180,.25),
+            transparent 30%
+        ),
+        linear-gradient(
+            180deg,
+            #111a38 0%,
+            #182754 45%,
+            #243b68 100%
+        );
+}
+
+
+/* =========================
+   BIENVENIDOS
+========================= */
+
+#welcomeScreen{
+    position:fixed;
+    inset:0;
+
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    background:
+        linear-gradient(
+            180deg,
+            #111a38,
+            #182754,
+            #243b68
+        );
+
+    animation:
+        welcomeOut 3.5s ease forwards;
+}
+
+#welcomeScreen h1{
+    color:#ff2020;
+
+    font-size:
+        clamp(42px,10vw,90px);
+
+    letter-spacing:7px;
+
+    text-align:center;
+
+    text-shadow:
+        0 0 10px rgba(255,0,0,.9),
+        0 0 25px rgba(255,0,0,.7),
+        0 0 50px rgba(255,0,0,.4);
+
+    animation:
+        welcomeText 1s ease;
+}
+
+@keyframes welcomeText{
+
+    from{
+        opacity:0;
+        transform:scale(.75);
+    }
+
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes welcomeOut{
+
+    0%{
+        opacity:1;
+        visibility:visible;
+    }
+
+    70%{
+        opacity:1;
+    }
+
+    100%{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+    }
+}
+
+
+/* =========================
+   ESTRELLAS
+========================= */
+
+.background{
+    position:fixed;
+    inset:0;
+
+    z-index:-2;
+
+    overflow:hidden;
+
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(100,130,255,.15),
+            transparent 45%
+        );
+}
+
+.background::before{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background-image:
+        radial-gradient(
+            circle,
+            white 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle,
+            white 1px,
+            transparent 1.5px
+        ),
+        radial-gradient(
+            circle,
+            white 1.5px,
+            transparent 2px
+        );
+
+    background-size:
+        90px 90px,
+        140px 140px,
+        220px 220px;
+
+    background-position:
+        10px 20px,
+        50px 80px,
+        100px 30px;
+
+    opacity:.65;
+
+    animation:
+        estrellas 25s linear infinite;
+}
+
+.background::after{
+    content:"";
+
+    position:absolute;
+    inset:0;
+
+    background:
+        radial-gradient(
+            circle at 50% 100%,
+            rgba(90,130,255,.25),
+            transparent 45%
+        );
+
+    pointer-events:none;
+}
+
+@keyframes estrellas{
+
+    from{
+        transform:translateY(0);
+    }
+
+    to{
+        transform:translateY(90px);
+    }
+}
+
+
+/* =========================
+   APP
+========================= */
+
+.app{
+    min-height:100vh;
+
+    padding:
+        22px 18px 110px;
+}
+
+
+/* =========================
+   PERFIL
+========================= */
+
+.profile{
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+
+    margin-bottom:18px;
+}
+
+.avatar{
+    width:58px;
+    height:58px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-weight:bold;
+    font-size:18px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7655ff,
+            #3d8cff
+        );
+
+    border:
+        2px solid rgba(255,255,255,.8);
+
+    box-shadow:
+        0 0 25px rgba(90,80,255,.4);
+}
+
+.profile-text h1{
+    font-size:22px;
+}
+
+.profile-text p{
+    margin-top:3px;
+
+    color:#d2d3dc;
+
+    font-size:14px;
+}
+
+
+/* =========================
+   BUSCADOR
+========================= */
+
+.search-box{
+    width:100%;
+    height:58px;
+
+    display:flex;
+    align-items:center;
+
+    border:
+        2px solid rgba(255,255,255,.8);
+
+    border-radius:18px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    backdrop-filter:blur(18px);
+
+    margin-bottom:28px;
+
+    overflow:hidden;
+}
+
+.search-icon{
+    font-size:27px;
+
+    padding-left:17px;
+}
+
+.search-box input{
+    flex:1;
+
+    height:100%;
+
+    border:0;
+    outline:none;
+
+    background:transparent;
+
+    color:white;
+
+    padding:
+        0 13px;
+
+    font-size:17px;
+}
+
+.search-box input::placeholder{
+    color:#e5e5e5;
+}
+
+.search-box button{
+    height:100%;
+
+    border:0;
+
+    padding:
+        0 19px;
+
+    color:white;
+
+    background:transparent;
+
+    font-weight:bold;
+
+    font-size:16px;
+
+    cursor:pointer;
+}
+
+
+/* =========================
+   BIENVENIDA PRINCIPAL
+========================= */
+
+.welcome{
+    margin-bottom:25px;
+}
+
+.welcome small{
+    color:#c9c9d3;
+
+    letter-spacing:2px;
+}
+
+.welcome h2{
+    margin-top:6px;
+
+    font-size:
+        clamp(30px,8vw,55px);
+}
+
+.welcome p{
+    margin-top:7px;
+
+    color:#d1d2da;
+}
+
+
+/* =========================
+   TARJETAS
+========================= */
+
+.grid{
+    display:grid;
+
+    grid-template-columns:
+        repeat(2,1fr);
+
+    gap:14px;
+}
+
+.card{
+    min-height:130px;
+
+    padding:20px;
+
+    border-radius:22px;
+
+    background:
+        rgba(20,22,31,.42);
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:blur(18px);
+
+    cursor:pointer;
+
+    transition:.25s;
+
+    display:flex;
+
+    flex-direction:column;
+
+    justify-content:space-between;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,.15);
+}
+
+.card:hover{
+    transform:translateY(-4px);
+
+    background:
+        rgba(50,55,80,.55);
+
+    border-color:
+        rgba(255,255,255,.4);
+}
+
+.card-icon{
+    width:48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:15px;
+
+    font-size:25px;
+
+    background:
+        rgba(255,255,255,.12);
+}
+
+.card h3{
+    margin-top:15px;
+
+    font-size:17px;
+}
+
+.card p{
+    margin-top:4px;
+
+    color:#c2c4ce;
+
+    font-size:12px;
+}
+
+
+/* =========================
+   PÁGINAS
+========================= */
+
+#linksPage,
+#settingsPage,
+#accountPage{
+    display:none;
+}
+
+.section-title{
+    font-size:30px;
+
+    margin-bottom:20px;
+}
+
+
+/* =========================
+   LINKS
+========================= */
+
+.link-item{
+    display:flex;
+    align-items:center;
+
+    gap:14px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+    border-radius:18px;
+
+    background:
+        rgba(20,22,31,.45);
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    backdrop-filter:blur(18px);
+
+    text-decoration:none;
+
+    color:white;
+
+    transition:.25s;
+}
+
+.link-item:hover{
+    transform:translateY(-2px);
+
+    background:
+        rgba(50,55,80,.6);
+}
+
+.link-icon{
+    width:45px;
+    height:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:13px;
+
+    background:
+        rgba(255,255,255,.12);
+
+    font-size:22px;
+}
+
+.link-info{
+    flex:1;
+}
+
+.link-info strong{
+    display:block;
+}
+
+.link-info span{
+    display:block;
+
+    color:#b7b9c3;
+
+    margin-top:4px;
+
+    font-size:12px;
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.setting{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    gap:15px;
+
+    padding:18px;
+
+    margin-bottom:12px;
+
+    border-radius:18px;
+
+    background:
+        rgba(20,22,31,.45);
+
+    border:
+        1px solid rgba(255,255,255,.15);
+
+    backdrop-filter:blur(18px);
+}
+
+.setting-text{
+    flex:1;
+}
+
+.setting-text strong{
+    display:block;
+}
+
+.setting-text span{
+    display:block;
+
+    color:#b3b5c0;
+
+    font-size:12px;
+
+    margin-top:5px;
+}
+
+.switch{
+    width:52px;
+    height:30px;
+
+    border:0;
+
+    border-radius:20px;
+
+    background:#444754;
+
+    position:relative;
+
+    cursor:pointer;
+}
+
+.switch::after{
+    content:"";
+
+    position:absolute;
+
+    width:24px;
+    height:24px;
+
+    top:3px;
+    left:4px;
+
+    border-radius:50%;
+
+    background:white;
+
+    transition:.25s;
+}
+
+.switch.on{
+    background:#7655ff;
+}
+
+.switch.on::after{
+    left:24px;
+}
+
+
+/* =========================
+   CUENTA
+========================= */
+
+.account{
+    text-align:center;
+
+    padding-top:20px;
+}
+
+.big-avatar{
+    width:110px;
+    height:110px;
+
+    margin:
+        0 auto 18px;
+
+    border-radius:50%;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:35px;
+    font-weight:bold;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7655ff,
+            #318cff
+        );
+
+    border:
+        3px solid white;
+
+    box-shadow:
+        0 0 35px rgba(100,100,255,.35);
+}
+
+.account h2{
+    font-size:27px;
+}
+
+.account p{
+    color:#b8bac4;
+
+    margin-top:7px;
+}
+
+
+/* =========================
+   BARRA INFERIOR
+========================= */
+
+.bottom{
+    position:fixed;
+
+    bottom:14px;
+    left:14px;
+    right:14px;
+
+    height:72px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-around;
+
+    border-radius:24px;
+
+    background:
+        rgba(15,17,24,.55);
+
+    border:
+        1px solid rgba(255,255,255,.18);
+
+    backdrop-filter:blur(22px);
+
+    box-shadow:
+        0 10px 40px rgba(0,0,0,.25);
+
+    z-index:100;
+}
+
+.nav{
+    border:0;
+
+    background:transparent;
+
+    color:#aeb1bd;
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    gap:5px;
+
+    font-size:12px;
+
+    cursor:pointer;
+
+    transition:.2s;
+}
+
+.nav-icon{
+    font-size:23px;
+}
+
+.nav.active{
+    color:white;
+
+    transform:
+        translateY(-2px);
+}
+
+
+/* =========================
+   ANIMACIÓN
+========================= */
+
+.fade{
+    animation:
+        fadeIn .35s ease;
+}
+
+@keyframes fadeIn{
+
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media(max-width:600px){
+
+    .app{
+        padding:
+            18px 14px 105px;
+    }
+
+    .grid{
+        grid-template-columns:
+            repeat(2,1fr);
+    }
+
+    .card{
+        min-height:125px;
+
+        padding:16px;
+    }
+
+    .welcome h2{
+        font-size:39px;
+    }
+
+    .profile-text h1{
+        font-size:19px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     PANTALLA BIENVENIDOS
+========================= -->
+
+<div id="welcomeScreen">
+
+    <h1>
+        BIENVENIDOS
+    </h1>
+
+</div>
+
+
+<!-- FONDO DE ESTRELLAS -->
+
+<div class="background"></div>
+
+
+<div class="app">
+
+
+<!-- =========================
+     PERFIL
+========================= -->
+
+<div class="profile">
+
+    <div class="avatar">
+        VC
+    </div>
+
+    <div class="profile-text">
+
+        <h1>
+            Vertex Community
+        </h1>
+
+        <p>
+            Community & Links
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     BUSCADOR
+========================= -->
+
+<form
+    class="search-box"
+    action="https://www.google.com/search"
+    method="GET"
+    target="_blank"
+>
+
+    <div class="search-icon">
+        🔍
+    </div>
+
+    <input
+        type="search"
+        name="q"
+        placeholder="Buscar contenido..."
+        autocomplete="off"
+    >
+
+    <button type="submit">
+        Buscar
+    </button>
+
+</form>
+
+
+<!-- =========================
+     INICIO
+========================= -->
+
+<div id="homePage" class="fade">
+
+    <div class="welcome">
+
+        <small>
+            VERTEX COMMUNITY
+        </small>
+
+        <h2>
+            Bienvenido
+        </h2>
+
+        <p>
+            Explora nuestros enlaces y herramientas.
+        </p>
+
+    </div>
+
+
+    <div class="grid">
+
+
+        <div
+            class="card"
+            onclick="openPage('links')"
+        >
+
+            <div class="card-icon">
+                🔗
+            </div>
+
+            <div>
+
+                <h3>
+                    Links
+                </h3>
+
+                <p>
+                    Enlaces de la comunidad
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            onclick="openPage('settings')"
+        >
+
+            <div class="card-icon">
+                ⚙️
+            </div>
+
+            <div>
+
+                <h3>
+                    Settings
+                </h3>
+
+                <p>
+                    Personaliza tu página
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            onclick="openPage('account')"
+        >
+
+            <div class="card-icon">
+                👤
+            </div>
+
+            <div>
+
+                <h3>
+                    Account
+                </h3>
+
+                <p>
+                    Vertex Community
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="card"
+            onclick="window.open('https://delta.bz','_blank')"
+        >
+
+            <div class="card-icon">
+                ⚡
+            </div>
+
+            <div>
+
+                <h3>
+                    Delta
+                </h3>
+
+                <p>
+                    Sitio web
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     LINKS
+========================= -->
+
+<div id="linksPage" class="fade">
+
+    <h2 class="section-title">
+        🔗 Links
+    </h2>
+
+
+    <a
+        class="link-item"
+        href="https://nite.games"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+
+        <div class="link-icon">
+            🎮
+        </div>
+
+        <div class="link-info">
+
+            <strong>
+                Nite Games
+            </strong>
+
+            <span>
+                Sitio web
+            </span>
+
+        </div>
+
+        <div>
+            →
+        </div>
+
+    </a>
+
+
+    <a
+        class="link-item"
+        href="https://delta.bz"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+
+        <div class="link-icon">
+            ⚡
+        </div>
+
+        <div class="link-info">
+
+            <strong>
+                Delta
+            </strong>
+
+            <span>
+                Sitio web
+            </span>
+
+        </div>
+
+        <div>
+            →
+        </div>
+
+    </a>
+
+
+    <a
+        class="link-item"
+        href="https://discord.gg/unuDeUAAZ"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+
+        <div class="link-icon">
+            💬
+        </div>
+
+        <div class="link-info">
+
+            <strong>
+                Discord
+            </strong>
+
+            <span>
+                Comunidad Vertex
+            </span>
+
+        </div>
+
+        <div>
+            →
+        </div>
+
+    </a>
+
+
+    <a
+        class="link-item"
+        href="https://www.tiktok.com/@drapsboutique3"
+        target="_blank"
+        rel="noopener noreferrer"
+    >
+
+        <div class="link-icon">
+            ♪
+        </div>
+
+        <div class="link-info">
+
+            <strong>
+                TikTok
+            </strong>
+
+            <span>
+                Red social
+            </span>
+
+        </div>
+
+        <div>
+            →
+        </div>
+
+    </a>
+
+</div>
+
+
+<!-- =========================
+     SETTINGS
+========================= -->
+
+<div id="settingsPage" class="fade">
+
+    <h2 class="section-title">
+        ⚙️ Settings
+    </h2>
+
+
+    <div class="setting">
+
+        <div class="setting-text">
+
+            <strong>
+                Animaciones
+            </strong>
+
+            <span>
+                Activa los efectos de la página
+            </span>
+
+        </div>
+
+        <button
+            class="switch on"
+            onclick="toggleSwitch(this)"
+        ></button>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div class="setting-text">
+
+            <strong>
+                Estrellas
+            </strong>
+
+            <span>
+                Activa o desactiva el fondo de estrellas
+            </span>
+
+        </div>
+
+        <button
+            class="switch on"
+            onclick="toggleStars(this)"
+        ></button>
+
+    </div>
+
+
+    <div class="setting">
+
+        <div class="setting-text">
+
+            <strong>
+                Modo oscuro
+            </strong>
+
+            <span>
+                Apariencia de la interfaz
+            </span>
+
+        </div>
+
+        <button
+            class="switch on"
+            onclick="toggleSwitch(this)"
+        ></button>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     ACCOUNT
+========================= -->
+
+<div id="accountPage" class="fade">
+
+    <div class="account">
+
+        <div class="big-avatar">
+            VC
+        </div>
+
+        <h2>
+            Vertex Community
+        </h2>
+
+        <p>
+            Community & Links
+        </p>
+
+    </div>
+
+</div>
+
+
+</div>
+
+
+<!-- =========================
+     BARRA INFERIOR
+========================= -->
+
+<nav class="bottom">
+
+
+    <button
+        class="nav active"
+        onclick="openPage('home')"
+    >
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
+        Inicio
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('links')"
+    >
+
+        <span class="nav-icon">
+            🔗
+        </span>
+
+        Links
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('settings')"
+    >
+
+        <span class="nav-icon">
+            ⚙
+        </span>
+
+        Settings
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('account')"
+    >
+
+        <span class="nav-icon">
+            ♙
+        </span>
+
+        Account
+
+    </button>
+
+
+</nav>
+
+
+<script>
+
+
+/* =========================
+   CAMBIAR PÁGINA
+========================= */
+
+function openPage(page){
+
+    const pages = [
+        "homePage",
+        "linksPage",
+        "settingsPage",
+        "accountPage"
+    ];
+
+
+    pages.forEach(function(id){
+
+        document.getElementById(id)
+            .style.display = "none";
+
+    });
+
+
+    if(page === "home"){
+
+        document.getElementById("homePage")
+            .style.display = "block";
+
+    }
+
+
+    if(page === "links"){
+
+        document.getElementById("linksPage")
+            .style.display = "block";
+
+    }
+
+
+    if(page === "settings"){
+
+        document.getElementById("settingsPage")
+            .style.display = "block";
+
+    }
+
+
+    if(page === "account"){
+
+        document.getElementById("accountPage")
+            .style.display = "block";
+
+    }
+
+
+    document
+        .querySelectorAll(".nav")
+        .forEach(function(button){
+
+            button.classList.remove("active");
+
+        });
+
+
+    const buttons =
+        document.querySelectorAll(".nav");
+
+
+    if(page === "home")
+        buttons[0].classList.add("active");
+
+    if(page === "links")
+        buttons[1].classList.add("active");
+
+    if(page === "settings")
+        buttons[2].classList.add("active");
+
+    if(page === "account")
+        buttons[3].classList.add("active");
+
+}
+
+
+/* =========================
+   SWITCH
+========================= */
+
+function toggleSwitch(button){
+
+    button.classList.toggle("on");
+
+}
+
+
+/* =========================
+   ESTRELLAS
+========================= */
+
+function toggleStars(button){
+
+    button.classList.toggle("on");
+
+    const fondo =
+        document.querySelector(".background");
+
+
+    if(
+        button.classList.contains("on")
+    ){
+
+        fondo.style.display = "block";
+
+    }else{
+
+        fondo.style.display = "none";
+
+    }
+
+}
+
+</script>
+
+</body>
+</html>
