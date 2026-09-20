@@ -1,0 +1,1138 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vertex Community</title>
+
+<script src="https://www.paypal.com/sdk/js?client-id=AWGbhWPl74c8tWco1yuAFFM10pKjjl-CVUWAoYUcJxJqEy5C_6A9ZyTY1r4NGp76PfNuQaDOYk0P52nh&currency=USD&components=buttons&disable-funding=card,credit,paylater,venmo"></script>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    min-height:100vh;
+    font-family:Arial,Helvetica,sans-serif;
+    color:white;
+    overflow-x:hidden;
+    background:
+        radial-gradient(circle at 20% 20%,rgba(90,70,180,.35),transparent 30%),
+        radial-gradient(circle at 80% 70%,rgba(40,100,180,.25),transparent 30%),
+        linear-gradient(180deg,#111a38 0%,#182754 45%,#243b68 100%);
+}
+
+#welcomeScreen{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(180deg,#111a38,#182754,#243b68);
+    animation:welcomeOut 3.5s ease forwards;
+}
+
+#welcomeScreen h1{
+    color:#ff2020;
+    font-size:clamp(42px,10vw,90px);
+    letter-spacing:7px;
+    text-align:center;
+    text-shadow:
+        0 0 10px rgba(255,0,0,.9),
+        0 0 25px rgba(255,0,0,.7),
+        0 0 50px rgba(255,0,0,.4);
+    animation:welcomeText 1s ease;
+}
+
+@keyframes welcomeText{
+    from{
+        opacity:0;
+        transform:scale(.75);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes welcomeOut{
+    0%{
+        opacity:1;
+        visibility:visible;
+    }
+    70%{
+        opacity:1;
+    }
+    100%{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+    }
+}
+
+.background{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    overflow:hidden;
+    background:
+        radial-gradient(circle at 50% 40%,rgba(100,130,255,.15),transparent 45%);
+}
+
+.background::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background-image:
+        radial-gradient(circle,white 1px,transparent 1.5px),
+        radial-gradient(circle,white 1px,transparent 1.5px),
+        radial-gradient(circle,white 1.5px,transparent 2px);
+    background-size:90px 90px,140px 140px,220px 220px;
+    background-position:10px 20px,50px 80px,100px 30px;
+    opacity:.65;
+    animation:estrellas 25s linear infinite;
+}
+
+.background::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+        radial-gradient(circle at 50% 100%,rgba(90,130,255,.25),transparent 45%);
+    pointer-events:none;
+}
+
+@keyframes estrellas{
+    from{
+        transform:translateY(0);
+    }
+    to{
+        transform:translateY(90px);
+    }
+}
+
+.app{
+    min-height:100vh;
+    padding:22px 18px 110px;
+}
+
+.profile{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    margin-bottom:18px;
+}
+
+.avatar{
+    width:58px;
+    height:58px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+    font-size:18px;
+    background:linear-gradient(135deg,#7655ff,#3d8cff);
+    border:2px solid rgba(255,255,255,.8);
+    box-shadow:0 0 25px rgba(90,80,255,.4);
+}
+
+.profile-text h1{
+    font-size:22px;
+}
+
+.profile-text p{
+    opacity:.65;
+    font-size:13px;
+    margin-top:4px;
+}
+
+.search{
+    display:flex;
+    gap:8px;
+    margin-bottom:25px;
+}
+
+.search input{
+    flex:1;
+    padding:14px 16px;
+    border:none;
+    outline:none;
+    border-radius:13px;
+    background:rgba(255,255,255,.08);
+    color:white;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+.search input::placeholder{
+    color:rgba(255,255,255,.5);
+}
+
+.search button{
+    padding:0 17px;
+    border:none;
+    border-radius:13px;
+    background:#4b72ff;
+    color:white;
+    font-weight:bold;
+}
+
+.welcome{
+    margin-bottom:25px;
+}
+
+.welcome small{
+    color:#8fa8ff;
+    letter-spacing:2px;
+    font-weight:bold;
+}
+
+.welcome h2{
+    margin-top:8px;
+    font-size:32px;
+}
+
+.welcome p{
+    margin-top:8px;
+    opacity:.65;
+}
+
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:14px;
+}
+
+.card{
+    padding:18px;
+    border-radius:18px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(12px);
+    cursor:pointer;
+    transition:.25s ease;
+    min-height:130px;
+}
+
+.card:hover{
+    transform:translateY(-4px);
+    background:rgba(255,255,255,.11);
+}
+
+.card-icon{
+    font-size:30px;
+    margin-bottom:15px;
+}
+
+.card h3{
+    font-size:17px;
+}
+
+.card p{
+    font-size:13px;
+    opacity:.55;
+    margin-top:5px;
+}
+
+.shop-card{
+    grid-column:1 / -1;
+    padding:22px;
+    border-radius:20px;
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,40,40,.15),
+            rgba(80,80,255,.15)
+        );
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 10px 35px rgba(0,0,0,.2);
+}
+
+.shop-icon{
+    font-size:40px;
+    margin-bottom:12px;
+}
+
+.shop-card h3{
+    font-size:22px;
+}
+
+.shop-card p{
+    margin-top:7px;
+    opacity:.65;
+    line-height:1.5;
+}
+
+.price{
+    margin-top:16px;
+    font-size:30px;
+    font-weight:bold;
+    color:#fff;
+}
+
+.buy-box{
+    margin-top:18px;
+}
+
+.email-input{
+    width:100%;
+    padding:14px 15px;
+    border:none;
+    outline:none;
+    border-radius:12px;
+    background:rgba(0,0,0,.25);
+    border:1px solid rgba(255,255,255,.12);
+    color:white;
+    font-size:15px;
+}
+
+.email-input::placeholder{
+    color:rgba(255,255,255,.5);
+}
+
+.buy-button{
+    width:100%;
+    margin-top:12px;
+    padding:15px;
+    border:none;
+    border-radius:13px;
+    background:linear-gradient(135deg,#ff3030,#ff1744);
+    color:white;
+    font-size:16px;
+    font-weight:bold;
+    cursor:pointer;
+    box-shadow:0 8px 25px rgba(255,30,50,.25);
+    transition:.2s;
+}
+
+.buy-button:hover{
+    transform:translateY(-2px);
+}
+
+#paypal-button-container{
+    display:none;
+    margin-top:15px;
+}
+
+#purchaseMessage{
+    display:none;
+    margin-top:15px;
+    padding:13px;
+    border-radius:12px;
+    background:rgba(50,200,100,.12);
+    border:1px solid rgba(50,220,120,.2);
+    color:#baffce;
+    font-size:14px;
+}
+
+#linksPage,
+#settingsPage,
+#accountPage{
+    display:none;
+}
+
+.fade{
+    animation:fade .25s ease;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(8px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.page-title{
+    font-size:30px;
+    margin-bottom:20px;
+}
+
+.link-box{
+    display:block;
+    width:100%;
+    padding:18px;
+    margin-bottom:12px;
+    border-radius:16px;
+    background:rgba(255,255,255,.07);
+    border:1px solid rgba(255,255,255,.08);
+    color:white;
+    text-decoration:none;
+    transition:.2s;
+}
+
+.link-box:hover{
+    transform:translateY(-2px);
+    background:rgba(255,255,255,.11);
+}
+
+.setting{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:17px;
+    margin-bottom:12px;
+    border-radius:16px;
+    background:rgba(255,255,255,.07);
+}
+
+.switch{
+    width:48px;
+    height:27px;
+    border-radius:30px;
+    background:#444;
+    cursor:pointer;
+    position:relative;
+    border:none;
+}
+
+.switch::after{
+    content:"";
+    width:21px;
+    height:21px;
+    position:absolute;
+    top:3px;
+    left:3px;
+    border-radius:50%;
+    background:white;
+    transition:.2s;
+}
+
+.switch.on{
+    background:#4b72ff;
+}
+
+.switch.on::after{
+    left:24px;
+}
+
+.account{
+    text-align:center;
+    padding-top:60px;
+}
+
+.big-avatar{
+    width:100px;
+    height:100px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    font-size:28px;
+    font-weight:bold;
+    background:linear-gradient(135deg,#7655ff,#3d8cff);
+}
+
+.account h2{
+    margin-top:20px;
+}
+
+.account p{
+    opacity:.55;
+    margin-top:7px;
+}
+
+.bottom{
+    position:fixed;
+    left:12px;
+    right:12px;
+    bottom:12px;
+    height:72px;
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+    border-radius:22px;
+    background:rgba(15,22,50,.88);
+    border:1px solid rgba(255,255,255,.08);
+    backdrop-filter:blur(15px);
+    box-shadow:0 10px 40px rgba(0,0,0,.3);
+    z-index:100;
+}
+
+.nav{
+    border:none;
+    background:none;
+    color:rgba(255,255,255,.5);
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    font-size:11px;
+}
+
+.nav-icon{
+    font-size:21px;
+}
+
+.nav.active{
+    color:white;
+}
+
+@media(max-width:600px){
+
+    .grid{
+        grid-template-columns:1fr;
+    }
+
+    .shop-card{
+        grid-column:auto;
+    }
+
+}
+</style>
+</head>
+
+<body>
+
+<div id="welcomeScreen">
+    <h1>VERTEX</h1>
+</div>
+
+<div class="background"></div>
+
+<div class="app">
+
+    <div class="profile">
+
+        <div class="avatar">
+            VC
+        </div>
+
+        <div class="profile-text">
+
+            <h1>
+                Vertex Community
+            </h1>
+
+            <p>
+                Community & Links
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <form class="search" onsubmit="return false">
+
+        <input
+            type="text"
+            placeholder="Buscar..."
+            autocomplete="off"
+        >
+
+        <button type="submit">
+            Buscar
+        </button>
+
+    </form>
+
+
+    <div id="homePage" class="fade">
+
+        <div class="welcome">
+
+            <small>
+                VERTEX COMMUNITY
+            </small>
+
+            <h2>
+                Bienvenido
+            </h2>
+
+            <p>
+                Explora nuestros enlaces, herramientas y productos.
+            </p>
+
+        </div>
+
+
+        <div class="grid">
+
+
+            <!-- PRODUCTO -->
+
+            <div class="shop-card">
+
+                <div class="shop-icon">
+                    🔥
+                </div>
+
+                <h3>
+                    CHILLI HUB PREMIUM
+                </h3>
+
+                <p>
+                    STEAL AN EGG
+                </p>
+
+                <p>
+                    Compra el producto por PayPal.
+                    Después del pago confirmado,
+                    recibirás el producto en el correo
+                    electrónico que introduzcas.
+                </p>
+
+                <div class="price">
+                    $2.91 USD
+                </div>
+
+
+                <div class="buy-box">
+
+                    <input
+                        id="buyerEmail"
+                        class="email-input"
+                        type="email"
+                        placeholder="Tu correo electrónico"
+                        autocomplete="email"
+                    >
+
+
+                    <button
+                        id="buyButton"
+                        class="buy-button"
+                        type="button"
+                        onclick="startPurchase()"
+                    >
+                        💳 Comprar por $2.91
+                    </button>
+
+
+                    <div id="paypal-button-container"></div>
+
+                    <div id="purchaseMessage"></div>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="card"
+                onclick="openPage('links')"
+            >
+
+                <div class="card-icon">
+                    🔗
+                </div>
+
+                <h3>
+                    Links
+                </h3>
+
+                <p>
+                    Enlaces de la comunidad
+                </p>
+
+            </div>
+
+
+            <div
+                class="card"
+                onclick="openPage('settings')"
+            >
+
+                <div class="card-icon">
+                    ⚙️
+                </div>
+
+                <h3>
+                    Settings
+                </h3>
+
+                <p>
+                    Personaliza tu página
+                </p>
+
+            </div>
+
+
+            <div
+                class="card"
+                onclick="openPage('account')"
+            >
+
+                <div class="card-icon">
+                    👤
+                </div>
+
+                <h3>
+                    Account
+                </h3>
+
+                <p>
+                    Vertex Community
+                </p>
+
+            </div>
+
+
+            <div
+                class="card"
+                onclick="window.open('https://delta.bz','_blank')"
+            >
+
+                <div class="card-icon">
+                    ⚡
+                </div>
+
+                <h3>
+                    Delta
+                </h3>
+
+                <p>
+                    Sitio web
+                </p>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div id="linksPage" class="fade">
+
+        <h2 class="page-title">
+            🔗 Links
+        </h2>
+
+        <a
+            class="link-box"
+            href="https://discord.com"
+            target="_blank"
+        >
+            💬 Discord
+        </a>
+
+        <a
+            class="link-box"
+            href="https://youtube.com"
+            target="_blank"
+        >
+            ▶️ YouTube
+        </a>
+
+        <a
+            class="link-box"
+            href="https://delta.bz"
+            target="_blank"
+        >
+            ⚡ Delta
+        </a>
+
+    </div>
+
+
+    <div id="settingsPage" class="fade">
+
+        <h2 class="page-title">
+            ⚙️ Settings
+        </h2>
+
+        <div class="setting">
+
+            <span>
+                Animación de estrellas
+            </span>
+
+            <button
+                class="switch on"
+                onclick="toggleStars(this)"
+            ></button>
+
+        </div>
+
+        <div class="setting">
+
+            <span>
+                Animaciones
+            </span>
+
+            <button
+                class="switch on"
+                onclick="toggleSwitch(this)"
+            ></button>
+
+        </div>
+
+    </div>
+
+
+    <div id="accountPage" class="fade">
+
+        <div class="account">
+
+            <div class="big-avatar">
+                VC
+            </div>
+
+            <h2>
+                Vertex Community
+            </h2>
+
+            <p>
+                Community & Links
+            </p>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<nav class="bottom">
+
+    <button
+        class="nav active"
+        onclick="openPage('home')"
+    >
+
+        <span class="nav-icon">
+            ⌂
+        </span>
+
+        Inicio
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('links')"
+    >
+
+        <span class="nav-icon">
+            🔗
+        </span>
+
+        Links
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('settings')"
+    >
+
+        <span class="nav-icon">
+            ⚙️
+        </span>
+
+        Settings
+
+    </button>
+
+
+    <button
+        class="nav"
+        onclick="openPage('account')"
+    >
+
+        <span class="nav-icon">
+            ♙
+        </span>
+
+        Account
+
+    </button>
+
+</nav>
+
+
+<script>
+
+function openPage(page){
+
+    const pages = [
+        "homePage",
+        "linksPage",
+        "settingsPage",
+        "accountPage"
+    ];
+
+    pages.forEach(function(id){
+
+        document.getElementById(id).style.display = "none";
+
+    });
+
+
+    if(page === "home"){
+        document.getElementById("homePage").style.display = "block";
+    }
+
+    if(page === "links"){
+        document.getElementById("linksPage").style.display = "block";
+    }
+
+    if(page === "settings"){
+        document.getElementById("settingsPage").style.display = "block";
+    }
+
+    if(page === "account"){
+        document.getElementById("accountPage").style.display = "block";
+    }
+
+
+    document.querySelectorAll(".nav").forEach(function(button){
+        button.classList.remove("active");
+    });
+
+
+    const buttons = document.querySelectorAll(".nav");
+
+    if(page === "home")
+        buttons[0].classList.add("active");
+
+    if(page === "links")
+        buttons[1].classList.add("active");
+
+    if(page === "settings")
+        buttons[2].classList.add("active");
+
+    if(page === "account")
+        buttons[3].classList.add("active");
+
+}
+
+
+function toggleSwitch(button){
+
+    button.classList.toggle("on");
+
+}
+
+
+function toggleStars(button){
+
+    button.classList.toggle("on");
+
+    const fondo = document.querySelector(".background");
+
+    if(button.classList.contains("on")){
+        fondo.style.display = "block";
+    }else{
+        fondo.style.display = "none";
+    }
+
+}
+
+
+let paypalLoaded = false;
+
+
+function startPurchase(){
+
+    const email =
+        document.getElementById("buyerEmail").value.trim();
+
+    const buyButton =
+        document.getElementById("buyButton");
+
+    const paypalContainer =
+        document.getElementById("paypal-button-container");
+
+    const message =
+        document.getElementById("purchaseMessage");
+
+
+    message.style.display = "none";
+    message.textContent = "";
+
+
+    if(!email){
+
+        alert(
+            "Introduce tu correo electrónico."
+        );
+
+        return;
+    }
+
+
+    if(!email.includes("@")){
+
+        alert(
+            "Introduce un correo electrónico válido."
+        );
+
+        return;
+    }
+
+
+    buyButton.style.display = "none";
+
+    paypalContainer.style.display = "block";
+
+
+    if(paypalLoaded){
+        return;
+    }
+
+
+    paypalLoaded = true;
+
+
+    paypal.Buttons({
+
+        style:{
+            layout:"vertical",
+            shape:"rect",
+            label:"paypal",
+            height:48
+        },
+
+
+        createOrder: async function(){
+
+            const response =
+                await fetch(
+                    "/api/create-order",
+                    {
+                        method:"POST",
+
+                        headers:{
+                            "Content-Type":
+                                "application/json"
+                        },
+
+                        body:JSON.stringify({
+                            email:email
+                        })
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+            if(!response.ok){
+
+                throw new Error(
+                    data.error ||
+                    "No se pudo crear la orden."
+                );
+
+            }
+
+
+            return data.id;
+
+        },
+
+
+        onApprove: async function(data){
+
+            paypalContainer.style.display = "none";
+
+            message.style.display = "block";
+
+            message.textContent =
+                "Confirmando tu pago...";
+
+
+            try{
+
+                const response =
+                    await fetch(
+                        "/api/capture-order",
+                        {
+                            method:"POST",
+
+                            headers:{
+                                "Content-Type":
+                                    "application/json"
+                            },
+
+                            body:JSON.stringify({
+
+                                orderID:data.orderID,
+
+                                email:email
+
+                            })
+                        }
+                    );
+
+
+                const result =
+                    await response.json();
+
+
+                if(!response.ok){
+
+                    throw new Error(
+                        result.error ||
+                        "Error al confirmar el pago."
+                    );
+
+                }
+
+
+                message.textContent =
+                    "✅ Pago confirmado. Revisa tu correo para recibir tu producto.";
+
+
+            }catch(error){
+
+                console.error(error);
+
+                message.textContent =
+                    "El pago fue procesado, pero hubo un problema al entregar el producto. Contacta con soporte.";
+
+            }
+
+        },
+
+
+        onCancel:function(){
+
+            paypalContainer.style.display = "none";
+
+            buyButton.style.display = "block";
+
+        },
+
+
+        onError:function(error){
+
+            console.error(
+                "PayPal error:",
+                error
+            );
+
+            paypalContainer.style.display = "none";
+
+            buyButton.style.display = "block";
+
+            alert(
+                "Ocurrió un error con PayPal. Intenta nuevamente."
+            );
+
+        }
+
+    }).render(
+        "#paypal-button-container"
+    );
+
+}
+
+</script>
+
+</body>
+</html>
